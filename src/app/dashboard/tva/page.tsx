@@ -12,11 +12,12 @@ export default async function TvaPage() {
 
   const companyIds = (companies || []).map(c => c.id)
 
-  const { data: transactions } = await supabase
+  const transactions = companyIds.length ? (await supabase
     .from('transactions')
     .select('*')
-    .in('company_id', companyIds.length ? companyIds : ['00000000-0000-0000-0000-000000000000'])
+    .in('company_id', companyIds)
     .order('date', { ascending: false })
+  ).data : []
 
   return (
     <div className="p-8">

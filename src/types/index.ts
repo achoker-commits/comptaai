@@ -34,6 +34,9 @@ export interface Transaction {
   amount: number
   type: 'debit' | 'credit'
   category: string
+  pcg_account?: string
+  tva_rate?: number
+  tva_amount?: number
   date: string
   created_at: string
 }

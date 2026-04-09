@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
   ]
 
   const rows = (transactions || []).map(t => {
-    const tvaRate = t.tva_rate ?? 20
+    const tvaRate = t.tva_rate ?? 21
     const tvaAmount = t.tva_amount ?? (t.amount * tvaRate / 100)
     const ttc = t.amount + tvaAmount
     const companyName = (t.companies as { name: string } | null)?.name || ''

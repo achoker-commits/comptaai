@@ -20,21 +20,23 @@ export default async function DashboardPage() {
 
   // Transactions du mois courant
   const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
-  const { data: transactions } = await supabase
+  const transactions = companyIds.length ? (await supabase
     .from('transactions')
     .select('*')
-    .in('company_id', companyIds.length ? companyIds : ['00000000-0000-0000-0000-000000000000'])
+    .in('company_id', companyIds)
     .gte('date', startOfMonth)
+  ).data : []
 
   // Toutes les transactions (6 derniers mois) pour les graphiques
   const sixMonthsAgo = new Date()
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5)
   sixMonthsAgo.setDate(1)
-  const { data: allTransactions } = await supabase
+  const allTransactions = companyIds.length ? (await supabase
     .from('transactions')
     .select('*')
-    .in('company_id', companyIds.length ? companyIds : ['00000000-0000-0000-0000-000000000000'])
+    .in('company_id', companyIds)
     .gte('date', sixMonthsAgo.toISOString().split('T')[0])
+  ).data : []
 
   const totalRevenue = (transactions || [])
     .filter(t => t.type === 'credit')
@@ -71,12 +73,13 @@ export default async function DashboardPage() {
     .sort((a, b) => b.value - a.value)
     .slice(0, 6)
 
-  const { data: recentDocs } = await supabase
+  const recentDocs = companyIds.length ? (await supabase
     .from('documents')
     .select('*')
-    .in('company_id', companyIds.length ? companyIds : ['00000000-0000-0000-0000-000000000000'])
+    .in('company_id', companyIds)
     .order('created_at', { ascending: false })
     .limit(5)
+  ).data : []
 
   const firstName = user?.user_metadata?.full_name?.split(' ')[0] || 'vous'
 

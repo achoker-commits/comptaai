@@ -33,7 +33,7 @@ export function AddTransactionForm({ companies, onAdded }: Props) {
     amount: '',
     category_index: '0',
     date: new Date().toISOString().split('T')[0],
-    tva_rate: '20',
+    tva_rate: '21',
   })
 
   const selected = PCG_CATEGORIES[parseInt(form.category_index)]
@@ -136,11 +136,10 @@ export function AddTransactionForm({ companies, onAdded }: Props) {
                 onChange={e => setForm(f => ({ ...f, tva_rate: e.target.value }))}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="20">20% (normal)</option>
-                <option value="10">10% (intermédiaire)</option>
-                <option value="5.5">5,5% (réduit)</option>
-                <option value="2.1">2,1% (super réduit)</option>
-                <option value="0">0% (exonéré)</option>
+                <option value="21">21% (taux normal)</option>
+                <option value="12">12% (taux réduit)</option>
+                <option value="6">6% (taux réduit)</option>
+                <option value="0">0% (exonéré / intracommunautaire)</option>
               </select>
             </div>
           </div>

@@ -70,12 +70,12 @@ export function TvaCalculator({ transactions, companies }: Props) {
   const expenses = periodTransactions.filter(t => t.type === 'debit' && isDeductible(t.pcg_account))
 
   const tvaCollectee = revenues.reduce((sum, t) => {
-    const rate = t.tva_rate ?? 20
+    const rate = t.tva_rate ?? 21
     return sum + (t.tva_amount ?? t.amount * rate / 100)
   }, 0)
 
   const tvaDeductible = expenses.reduce((sum, t) => {
-    const rate = t.tva_rate ?? 20
+    const rate = t.tva_rate ?? 21
     return sum + (t.tva_amount ?? t.amount * rate / 100)
   }, 0)
 
@@ -91,7 +91,7 @@ export function TvaCalculator({ transactions, companies }: Props) {
   const rateBreakdown = (txs: Transaction[], label: string) => {
     const byRate: Record<number, { base: number; tva: number }> = {}
     txs.forEach(t => {
-      const rate = t.tva_rate ?? 20
+      const rate = t.tva_rate ?? 21
       if (!byRate[rate]) byRate[rate] = { base: 0, tva: 0 }
       byRate[rate].base += t.amount
       byRate[rate].tva += (t.tva_amount ?? t.amount * rate / 100)

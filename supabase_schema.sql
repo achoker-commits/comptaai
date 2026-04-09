@@ -59,7 +59,7 @@ create table if not exists transactions (
   type text check (type in ('debit', 'credit')) not null,
   category text not null default 'Non catégorisé',
   pcg_account text,                        -- Compte PCG (ex: 607000)
-  tva_rate numeric(5,2) default 20,        -- Taux TVA en % (ex: 20, 10, 5.5)
+  tva_rate numeric(5,2) default 21,        -- Taux TVA belge en % (21, 12, 6, 0)
   tva_amount numeric(12,2),                -- Montant TVA calculé
   date date not null,
   created_at timestamptz default now() not null
