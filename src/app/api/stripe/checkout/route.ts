@@ -4,6 +4,10 @@ import { createCheckoutSession, createCustomer } from '@/lib/stripe'
 import { PLANS, Plan } from '@/types'
 
 export async function POST(request: NextRequest) {
+  if (!process.env.STRIPE_SECRET_KEY?.startsWith('sk_')) {
+    return Response.json({ error: 'Stripe non configuré' }, { status: 503 })
+  }
+
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return Response.json({ error: 'Non autorisé' }, { status: 401 })

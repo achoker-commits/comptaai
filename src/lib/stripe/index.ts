@@ -1,9 +1,12 @@
 import Stripe from 'stripe'
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-03-25.dahlia',
-  typescript: true,
-})
+const stripeKey = process.env.STRIPE_SECRET_KEY || ''
+
+// Initialisation lazy : si la clé est absente ou placeholder, on crée quand même
+// l'objet mais il lèvera une erreur au moment de l'appel API (pas au build).
+export const stripe = stripeKey.startsWith('sk_')
+  ? new Stripe(stripeKey, { apiVersion: '2026-03-25.dahlia', typescript: true })
+  : null as unknown as Stripe
 
 export async function createCustomer(email: string, name: string) {
   return stripe.customers.create({ email, name })
